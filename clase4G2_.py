@@ -1,8 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
 
 class Paciente:
     def __init__(self):
@@ -32,55 +27,57 @@ class Paciente:
 class Sistema:
     def __init__(self):
       self.__lista_pacientes = []
-    #   self.__lista_pacientes = {}
-      self.__numero_pacientes = len(self.__lista_pacientes)
-      
-    def ingresarPaciente(self):
-        # 1- solicito los datos por teclado
-        nombre = input("Ingrese el nombre: ")
-        cedula = int(input("Ingrese la cedula: "))    
-        genero = input("Ingrese el genero: ")
-        servicio = input("Ingrese el servicio: ")
-        # 2- creo el objeto Paciente y le asigno los datos
-        p = Paciente()
-        p.asignarNombre(nombre)
-        p.asignarCedula(cedula)
-        p.asignarGenero(genero)
-        p.asignarServicio(servicio)        
-        # 3- guardo el Paciente en  la lista        
-        self.__lista_pacientes.append(p)
-        # self.__lista_pacientes[p.verCedula()] = p
-        # 4- actualizo la cantidad de pacientes en el sistema
-        self.__numero_pacientes = len(self.__lista_pacientes)
+
+    def ingresarPaciente(self,pac):
+        self.__lista_pacientes.append(pac)
 
     def verNumeroPacientes(self):
-        return self.__numero_pacientes
+        print(f"En el Sistema se encuentran {str(len(self.__lista_pacientes))} pacientes.")
     
-    def verDatosPaciente(self):
-        cedula = int(input("Ingrese la cedula a buscar: "))
-        
+    def verDatosPaciente(self,c):
         for paciente in self.__lista_pacientes:
-            if cedula == paciente.verCedula():
-                print("Nombre: " + paciente.verNombre())
-                print("Cedula: " + str(paciente.verCedula()))
-                print("Genero: " + paciente.verGenero())
-                print("Servicio: " + paciente.verServicio())
+            if c == paciente.verCedula():
+                return paciente
                 
-mi_sistema = Sistema()
+def main():
+    sis = Sistema()
+    while True:
+        menu = int(input("\nBienvenido. \nIngrese: \n1. Para ingresar un nuevo paciente.\n2. Para ver paciente.\n3. Para ver la cantidad de pacientes.\n4. Para salir.\nIngrese una opción: "))
 
-while True:
-    opcion = int(input("1. Nuevo paciente\n - 2. Numero de paciente\n - 3. Datos paciente\n - 4. Salir:  \n"))
-    if opcion == 1:
-        mi_sistema.ingresarPaciente()
-    elif opcion == 2:
-        print("Ahora hay: " + str(mi_sistema.verNumeroPacientes()))
-    elif opcion == 3:
-        mi_sistema.verDatosPaciente()
-    elif opcion == 4:
-        break
-    else:
-        print("Opcion invalida")
-    
+        if menu == 1:
+            print("\nHa seleccionado la opción de Ingresar un paciente.\nPor favor ingrese los datos solicitados a continuación...")
+            nombre = input("\nIngrese el nombre: ")
+            cedula = int(input("\nIngrese la cédula: "))
+            genero = input("\nIngrese el género: ")
+            servicio = input("\nIngrese el servicio: ")
+            paciente = Paciente()
 
+            paciente.asignarCedula(cedula)
+            paciente.asignarGenero(genero)
+            paciente.asignarNombre(nombre)
+            paciente.asignarServicio(servicio)
+            sis.ingresarPaciente(paciente)
+            print("\nEl paciente ha sido alamcenado exitosamente...")
 
+        elif menu == 2:
+            print("\nHa seleccionado la opción Ver Paciente...")
+            ced = int(input("\nIngrese la cédula del paciente que desea ver: "))
+            pbus = sis.verDatosPaciente(ced)
+            print("Nombre: " + pbus.verNombre())
+            print("Cédula: " + str(pbus.verCedula()))
+            print("Género: " + pbus.verGenero())
+            print("Servicio: " + pbus.verServicio())
 
+        elif menu == 3:
+            print("\nHa seleccionado la opción Ver la Cantidad de pacientes...")
+            sis.verNumeroPacientes()
+
+        elif menu == 4:
+            print("Hasta pronto")
+            break
+
+        else:
+            print("\nIngrese una opción válida...")
+
+if __name__ == "__main__" :
+    main()
