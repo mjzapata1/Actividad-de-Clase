@@ -1,4 +1,4 @@
-
+ver = True
 class Paciente:
     def __init__(self):
       self.__nombre = ""
@@ -28,16 +28,41 @@ class Sistema:
     def __init__(self):
       self.__lista_pacientes = []
 
-    def ingresarPaciente(self,pac):
-        self.__lista_pacientes.append(pac)
+    def ingresarPaciente(self,ced):
+        ing = True
+        for p in self.__lista_pacientes:
+            if ced == p.verCedula():
+                ing = False
+        if ing == True:
+            nombre = input("\nIngrese el nombre: ")
+            genero = input("\nIngrese el género: ")
+            servicio = input("\nIngrese el servicio: ")
+            paciente = Paciente()
+            paciente.asignarCedula(ced)
+            paciente.asignarGenero(genero)
+            paciente.asignarNombre(nombre)
+            paciente.asignarServicio(servicio)
+            self.__lista_pacientes.append(paciente)
+            print("\nEl paciente ha sido alamcenado exitosamente...")
+        elif ing == False:
+            print("\nEl paciente ya se encuentra registrado...")
 
     def verNumeroPacientes(self):
         print(f"En el Sistema se encuentran {str(len(self.__lista_pacientes))} pacientes.")
     
     def verDatosPaciente(self,c):
         for paciente in self.__lista_pacientes:
-            if c == paciente.verCedula():
-                return paciente
+          if c == paciente.verCedula():
+            ver = True
+            print("Nombre: " + paciente.verNombre())
+            print("Cédula: " + str(paciente.verCedula()))
+            print("Género: " + paciente.verGenero())
+            print("Servicio: " + paciente.verServicio())
+          else:
+            ver = False
+
+        if ver == False:
+          print("\nLa cédula que ha ingresado no se encuentra registrada...")
                 
 def main():
     sis = Sistema()
@@ -46,27 +71,13 @@ def main():
 
         if menu == 1:
             print("\nHa seleccionado la opción de Ingresar un paciente.\nPor favor ingrese los datos solicitados a continuación...")
-            nombre = input("\nIngrese el nombre: ")
             cedula = int(input("\nIngrese la cédula: "))
-            genero = input("\nIngrese el género: ")
-            servicio = input("\nIngrese el servicio: ")
-            paciente = Paciente()
-
-            paciente.asignarCedula(cedula)
-            paciente.asignarGenero(genero)
-            paciente.asignarNombre(nombre)
-            paciente.asignarServicio(servicio)
-            sis.ingresarPaciente(paciente)
-            print("\nEl paciente ha sido alamcenado exitosamente...")
+            sis.ingresarPaciente(cedula)
 
         elif menu == 2:
             print("\nHa seleccionado la opción Ver Paciente...")
             ced = int(input("\nIngrese la cédula del paciente que desea ver: "))
             pbus = sis.verDatosPaciente(ced)
-            print("Nombre: " + pbus.verNombre())
-            print("Cédula: " + str(pbus.verCedula()))
-            print("Género: " + pbus.verGenero())
-            print("Servicio: " + pbus.verServicio())
 
         elif menu == 3:
             print("\nHa seleccionado la opción Ver la Cantidad de pacientes...")
